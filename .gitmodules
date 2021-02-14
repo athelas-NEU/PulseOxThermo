@@ -1,0 +1,3 @@
+[submodule "Examples"]
+	path = Examples
+	url = https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library.git
