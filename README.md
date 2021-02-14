@@ -11,3 +11,9 @@ We will use [Example 08](https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Li
 3. The distance sensor will always publish it's data as well, and the Jetson Nano will use the data when **Phase 2** movement stage is in progress.
 4. The reason for the **Always Publish** model is so that the Jetson Nano won't need to send a command to the biosensor arduino. It can be totally passive in that regard.
     - Would be nice to turn the sensors off, but lack of time makes it a future issue.
+
+#### Useful Links
+- [Install Melodic Ros on Ubuntu](https://wiki.ros.org/melodic/Installation/Ubuntu)
+- [ROS Tutorials](https://wiki.ros.org/ROS/Tutorials)
+- [Controlling via ROS](https://github.com/athelas-NEU/arm-control-ros/wiki/Setup-for-Controlling-via-ROS): From our wiki. Mainly for reference. 
+- [ROS Arduino Temp Sensor example](https://wiki.ros.org/rosserial_arduino/Tutorials/Measuring%20Temperature)
