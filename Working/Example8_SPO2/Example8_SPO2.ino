@@ -104,7 +104,7 @@ void loop()
   //calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
   maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
 
-  //Continuously taking samples from MAX30102.  Heart rate and SpO2 are calculated every 1 second
+  //Continuously taking samples from MAX30102. Heart rate and SpO2 are calculated every 1 second
   while (1)
   {
     //dumping the first 25 sets of samples in the memory and shift the last 75 sets of samples to the top
@@ -148,4 +148,5 @@ void loop()
     //After gathering 25 new samples recalculate HR and SP02
     maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
   }
+  
 }
