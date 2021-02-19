@@ -3,13 +3,13 @@ Place for John and Christian to work on combining the biosensor code.
 
 ### Immediate Next Steps
 1. Add the sensor_control.ino code into main code loop.
-    - Remove the json parser code from this as it's no longer needed.
+  - Remove the json parser code from this as it's no longer needed.
 2. Remove extraneous print statements from code loop.
 3. Move away from string getting sent as data and just move to bytes of the numbers
 4. Attached to 3, work on decoding those bytes appropriately by moddeling the ROS node in some way.
-    - Currently Christian is using matlab to practice reading serial data from the arudiono and having the data in string form is making things harder, than when the data is in byte form, and a premade function "decodes" the data upon receipt.
+  - Currently Christian is using matlab to practice reading serial data from the arudiono and having the data in string form is making things harder, than when the data is in byte form, and a premade function "decodes" the data upon receipt.
 5. Work to include **pressure sensor** and **distance sensor** into the main code loop.
-    - Focus on getting the biosensor data outputting first. Safety third, as they say on the playa. 
+  - Focus on getting the biosensor data outputting first. Safety third, as they say on the playa. 
 
 ### Examples
 We will use [Example 08](https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library/blob/d625b7e31c06d5c6a27395a46a32e6ba927b5c0b/examples/Example8_SPO2/Example8_SPO2.ino) from the Sparkfun code pulled in.
@@ -17,10 +17,10 @@ We will use [Example 08](https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Li
 ### Plan So Far
 1. All the biosensors hooked up to the arduino will publish to the Jetson Nano ROS node all the time.
 2. The Jetson Nano ROS will subscribe to the biosensor data and decide whether to gather it or not.
-    - In this way the I2C toggling between data feeds won't need to be an issue.
+  - In this way the I2C toggling between data feeds won't need to be an issue.
 3. The distance sensor will always publish it's data as well, and the Jetson Nano will use the data when **Phase 2** movement stage is in progress.
 4. The reason for the **Always Publish** model is so that the Jetson Nano won't need to send a command to the biosensor arduino. It can be totally passive in that regard.
-    - Would be nice to turn the sensors off, but lack of time makes it a future issue.
+  - Would be nice to turn the sensors off, but lack of time makes it a future issue.
 
 #### Useful Links
 - [Install Melodic Ros on Ubuntu](https://wiki.ros.org/melodic/Installation/Ubuntu)
