@@ -1,6 +1,16 @@
 # PulseOxThermo
 Place for John and Christian to work on combining the biosensor code.
 
+### Immediate Next Steps
+1. Add the sensor_control.ino code into main code loop.
+    - Remove the json parser code from this as it's no longer needed.
+2. Remove extraneous print statements from code loop.
+3. Move away from string getting sent as data and just move to bytes of the numbers
+4. Attached to 3, work on decoding those bytes appropriately by moddeling the ROS node in some way.
+    - Currently Christian is using matlab to practice reading serial data from the arudiono and having the data in string form is making things harder, than when the data is in byte form, and a premade function "decodes" the data upon receipt.
+5. Work to include **pressure sensor** and **distance sensor** into the main code loop.
+    - Focus on getting the biosensor data outputting first. Safety third, as they say on the playa. 
+
 ### Examples
 We will use [Example 08](https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library/blob/d625b7e31c06d5c6a27395a46a32e6ba927b5c0b/examples/Example8_SPO2/Example8_SPO2.ino) from the Sparkfun code pulled in.
 
