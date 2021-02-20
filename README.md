@@ -3,7 +3,7 @@ Place for John and Christian to work on combining the biosensor code.
 
 ### Immediate Next Steps
 1. ~~Add the sensor_control.ino code into main code loop.~~
-  ~~- Remove the json parser code from this as it's no longer needed.~~
+  - ~~Remove the json parser code from this as it's no longer needed.~~
 2. Remove extraneous print statements from code loop.
 3. Adjust inner most PulseOx loop as it always runs,
     - **Or adjust it so safe guards always execute above all other operations.**
