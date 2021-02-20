@@ -2,13 +2,16 @@
 Place for John and Christian to work on combining the biosensor code.
 
 ### Immediate Next Steps
-1. Add the sensor_control.ino code into main code loop.
-  - Remove the json parser code from this as it's no longer needed.
+1. ~~Add the sensor_control.ino code into main code loop.~~
+  ~~- Remove the json parser code from this as it's no longer needed.~~
 2. Remove extraneous print statements from code loop.
-3. Move away from string getting sent as data and just move to bytes of the numbers
-4. Attached to 3, work on decoding those bytes appropriately by moddeling the ROS node in some way.
+3. Adjust inner most PulseOx loop as it always runs,
+    - **Or adjust it so safe guards always execute above all other operations.**
+    - I worry the serial channel will get clogged with too much junk data when a safety critical service needs to be executed. Though at the 115200 baud rate, it should be more than fast enough.
+5. Move away from string getting sent as data and just move to bytes of the numbers
+6. Attached to previous, work on decoding those bytes appropriately by moddeling the ROS node in some way.
   - Currently Christian is using matlab to practice reading serial data from the arudiono and having the data in string form is making things harder, than when the data is in byte form, and a premade function "decodes" the data upon receipt.
-5. Work to include **pressure sensor** and **distance sensor** into the main code loop.
+7. Work to include **pressure sensor** and **distance sensor** into the main code loop.
   - Focus on getting the biosensor data outputting first. Safety third, as they say on the playa. 
 
 ### Examples
