@@ -1,3 +1,4 @@
+
 /*
   Optical SP02 Detection (SPK Algorithm) using the MAX30105 Breakout
   By: Nathan Seidle @ SparkFun Electronics
@@ -25,6 +26,13 @@
   The MAX30105 Breakout can handle 5V or 3.3V I2C logic. We recommend powering the board with 5V
   but it will also run at 3.3V.
 */
+
+// ROS includes START
+// ROS includes must come before all other inclues.
+#include <ros.h>
+#include <std_msgs/String.h>
+
+// ROS includes END
 
 #include <Wire.h>
 #include <Adafruit_MLX90614.h>

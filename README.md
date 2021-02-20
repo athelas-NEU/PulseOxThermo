@@ -14,6 +14,11 @@ Place for John and Christian to work on combining the biosensor code.
 7. Work to include **pressure sensor** and **distance sensor** into the main code loop.
   - Focus on getting the biosensor data outputting first. Safety third, as they say on the playa. 
 
+### ROS and Arduino Library Requirements
+- rosserial 0.7.9 must be used.
+	- Higher ver. use cstring which arduino doesn't use or some such.
+
+
 ### Examples
 We will use [Example 08](https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library/blob/d625b7e31c06d5c6a27395a46a32e6ba927b5c0b/examples/Example8_SPO2/Example8_SPO2.ino) from the Sparkfun code pulled in.
 
