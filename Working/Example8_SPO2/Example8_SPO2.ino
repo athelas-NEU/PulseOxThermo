@@ -28,10 +28,9 @@
 */
 
 // ROS includes START
-// ROS includes must come before all other inclues.
 #include <ros.h>
 #include <std_msgs/String.h>
-
+#include <std_msgs/Float32.h>
 // ROS includes END
 
 #include <Wire.h>
@@ -40,6 +39,20 @@
 #include "MAX30105.h"
 #include "spo2_algorithm.h"
 
+// ROS msgs and Publishers START
+
+std_msgs::Float32 temp_msg;
+ros::Publisher pub_temp("temp", &temp_msg);
+
+std_msgs::Float32 heart_msg;
+ros::Publisher pub_heart("heart", &heart_msg);
+
+std_msgs::Float32 spo2_msg;
+ros::Publisher pub_spo2("spo2", &spo2_msg);
+
+ros::NodeHandle node;
+
+// ROS msgs and Publisher END
 
 // Temp sensor objects
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
@@ -81,6 +94,13 @@ void setup()
 
   // Initialize PulseOx sensor
   particleSensor.begin(Wire, I2C_SPEED_FAST);
+
+  // Init ROS node
+  node.initNode();
+  node.advertise(pub_temp);
+  node.advertise(pub_heart);
+  node.advertise(pub_spo2);
+
   
 /* Removed check for PulseOx sensor 
   if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
@@ -180,6 +200,19 @@ void loop()
       // Added Temp sensor to print out. Not ideal but serves for now at least.
   	  Serial.print(F(", TEMP="));
   	  Serial.println( mlx.readObjectTempF() );
+
+      temp_msg.data = mlx.readObjectTempF();
+      heart_msg.data = heartRate;
+      spo2_msg.data = spo2;
+
+      pub_temp.publish(&temp_msg);
+      pub_heart.publish(&heart_msg);
+      pub_spo2.publish(&spo2_msg);
+
+      /*  This likely only needed for subscribers. Since this program only publishes can likely be removed.
+       *  More research. 
+      */
+      node.spinOnce();
     }
 
     //After gathering 25 new samples recalculate HR and SP02
