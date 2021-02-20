@@ -19,10 +19,6 @@ Place for John and Christian to work on combining the biosensor code.
 - rosserial 0.7.9 must be used.
 	- Higher ver. use cstring which arduino doesn't use or some such.
 
-
-### Examples
-We will use [Example 08](https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library/blob/d625b7e31c06d5c6a27395a46a32e6ba927b5c0b/examples/Example8_SPO2/Example8_SPO2.ino) from the Sparkfun code pulled in.
-
 ### Plan So Far
 1. All the biosensors hooked up to the arduino will publish to the Jetson Nano ROS node all the time.
 2. The Jetson Nano ROS will subscribe to the biosensor data and decide whether to gather it or not.
