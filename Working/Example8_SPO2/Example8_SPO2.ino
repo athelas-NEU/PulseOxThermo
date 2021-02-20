@@ -148,9 +148,11 @@ void loop()
     //take 25 sets of samples before calculating the heart rate.
     for (byte i = 75; i < 100; i++)
     {
+     /*
       while (particleSensor.available() == false) //do we have new data?
         particleSensor.check(); //Check the sensor for new data
-
+     */
+     
       digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
 
       redBuffer[i] = particleSensor.getRed();
@@ -175,9 +177,9 @@ void loop()
       Serial.print(F(", SPO2Valid="));
       Serial.println(validSPO2, DEC);
 
-    // Added Temp sensor to print out. Not ideal but serves for now at least.
-	  Serial.print(F(", TEMP="));
-	  Serial.println( mlx.readObjectTempF() );
+      // Added Temp sensor to print out. Not ideal but serves for now at least.
+  	  Serial.print(F(", TEMP="));
+  	  Serial.println( mlx.readObjectTempF() );
     }
 
     //After gathering 25 new samples recalculate HR and SP02
