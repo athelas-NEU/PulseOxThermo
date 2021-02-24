@@ -39,6 +39,7 @@
 #include "MAX30105.h"
 #include "spo2_algorithm.h"
 
+
 // ROS msgs and Publishers START
 
 std_msgs::Float32 temp_msg;
@@ -83,7 +84,7 @@ byte readLED = 13; //Blinks with each data read
 
 void setup()
 {
-  Serial.begin(115200); // initialize serial communication at 115200 bits per second:
+  //Serial.begin(115200); // initialize serial communication at 115200 bits per second:
   
   // Start temp sensor
   mlx.begin();  
@@ -101,6 +102,8 @@ void setup()
   node.advertise(pub_heart);
   node.advertise(pub_spo2);
 
+  //pinmode(a0, OUTPUT);
+  //digitalWrite(a0, HIGH)l;
   
 /* Removed check for PulseOx sensor 
   if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
@@ -146,10 +149,10 @@ void loop()
     irBuffer[i] = particleSensor.getIR();
     particleSensor.nextSample(); //We're finished with this sample so move to next sample
 
-    Serial.print(F("red="));
-    Serial.print(redBuffer[i], DEC);
-    Serial.print(F(", ir="));
-    Serial.println(irBuffer[i], DEC);
+//    Serial.print(F("red="));
+//    Serial.print(redBuffer[i], DEC);
+//    Serial.print(F(", ir="));
+//    Serial.println(irBuffer[i], DEC);
   }
 
   //calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
@@ -180,26 +183,26 @@ void loop()
       particleSensor.nextSample(); //We're finished with this sample so move to next sample
 
       //send samples and calculation result to terminal program through UART
-      Serial.print(F("red="));
-      Serial.print(redBuffer[i], DEC);
-      Serial.print(F(", ir="));
-      Serial.print(irBuffer[i], DEC);
-
-      Serial.print(F(", HR="));
-      Serial.print(heartRate, DEC);
-
-      Serial.print(F(", HRvalid="));
-      Serial.print(validHeartRate, DEC);
-
-      Serial.print(F(", SPO2="));
-      Serial.print(spo2, DEC);
-
-      Serial.print(F(", SPO2Valid="));
-      Serial.println(validSPO2, DEC);
+//      Serial.print(F("red="));
+//      Serial.print(redBuffer[i], DEC);
+//      Serial.print(F(", ir="));
+//      Serial.print(irBuffer[i], DEC);
+//
+//      Serial.print(F(", HR="));
+//      Serial.print(heartRate, DEC);
+//
+//      Serial.print(F(", HRvalid="));
+//      Serial.print(validHeartRate, DEC);
+//
+//      Serial.print(F(", SPO2="));
+//      Serial.print(spo2, DEC);
+//
+//      Serial.print(F(", SPO2Valid="));
+//      Serial.println(validSPO2, DEC);
 
       // Added Temp sensor to print out. Not ideal but serves for now at least.
-  	  Serial.print(F(", TEMP="));
-  	  Serial.println( mlx.readObjectTempF() );
+//  	  Serial.print(F(", TEMP="));
+//  	  Serial.println( mlx.readObjectTempF() );
 
       temp_msg.data = mlx.readObjectTempF();
       heart_msg.data = heartRate;
