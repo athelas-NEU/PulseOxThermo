@@ -204,11 +204,9 @@ void loop()
 //  	  Serial.print(F(", TEMP="));
 //  	  Serial.println( mlx.readObjectTempF() );
 
-      temp_msg.data = mlx.readObjectTempF();
       heart_msg.data = heartRate;
       spo2_msg.data = spo2;
-
-      pub_temp.publish(&temp_msg);
+          
       pub_heart.publish(&heart_msg);
       pub_spo2.publish(&spo2_msg);
 
@@ -217,6 +215,16 @@ void loop()
       */
       node.spinOnce();
     }
+
+      particleSensor.shutDown();
+      for (int k = 0; k >= 30; k++)
+      {
+        temp_msg.data = mlx.readObjectTempF();
+        delay(10);
+        pub_temp.publish(&temp_msg);
+        node.spinOnce();
+      }
+      particleSensor.wakeUp();
 
     //After gathering 25 new samples recalculate HR and SP02
     maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
