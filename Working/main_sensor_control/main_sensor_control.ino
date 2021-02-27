@@ -199,8 +199,8 @@ void loop()
 //
 //      Serial.print(F(", SPO2Valid="));
 //      Serial.println(validSPO2, DEC);
-
-      // Added Temp sensor to print out. Not ideal but serves for now at least.
+//
+//       //Added Temp sensor to print out. Not ideal but serves for now at least.
 //  	  Serial.print(F(", TEMP="));
 //  	  Serial.println( mlx.readObjectTempF() );
 
@@ -213,9 +213,9 @@ void loop()
       pub_spo2.publish(&spo2_msg);
 
       /*  This likely only needed for subscribers. Since this program only publishes can likely be removed.
+       *  More research. 
       */
-	  
-      // node.spinOnce();
+      node.spinOnce();
     }
 
     //After gathering 25 new samples recalculate HR and SP02
