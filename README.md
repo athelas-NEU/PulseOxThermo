@@ -1,6 +1,11 @@
 # PulseOxThermo
 Place for John and Christian to work on combining the biosensor code.
 
+## Code Directory
+Working -> Main -> main_sensor_control.ino
+
+src holds dependencies.
+
 ### Immediate Next Steps
 1. ~~Add the sensor_control.ino code into main code loop.~~
   - ~~Remove the json parser code from this as it's no longer needed.~~
