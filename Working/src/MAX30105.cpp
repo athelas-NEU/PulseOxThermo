@@ -143,10 +143,11 @@ boolean MAX30105::begin(TwoWire &wirePort, uint32_t i2cSpeed, uint8_t i2caddr) {
 
   _i2cPort = &wirePort; //Grab which port the user wants us to use
 
-  _i2cPort->begin();
-  _i2cPort->setClock(i2cSpeed);
+  //_i2cPort->begin();
+  //_i2cPort->setClock(i2cSpeed);
 
   _i2caddr = i2caddr;
+  //Serial.print("hey");
 
   // Step 1: Initial Communication and Verification
   // Check that a MAX30105 is connected
