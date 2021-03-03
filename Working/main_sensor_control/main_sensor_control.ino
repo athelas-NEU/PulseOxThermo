@@ -101,6 +101,13 @@ void setup()
   node.advertise(pub_temp);
   node.advertise(pub_heart);
   node.advertise(pub_spo2);
+  
+  
+    // Init ROS node
+  node.initNode();
+  node.advertise(pub_temp);
+  node.advertise(pub_heart);
+  node.advertise(pub_spo2);
 
   //pinmode(a0, OUTPUT);
   //digitalWrite(a0, HIGH)l;
@@ -142,8 +149,8 @@ void loop()
   //read the first 100 samples, and determine the signal range
   for (byte i = 0 ; i < bufferLength ; i++)
   {
-    while (particleSensor.available() == false) //do we have new data?
-      particleSensor.check(); //Check the sensor for new data
+//    while (particleSensor.available() == false) //do we have new data?
+//      particleSensor.check(); //Check the sensor for new data
 
     redBuffer[i] = particleSensor.getRed();
     irBuffer[i] = particleSensor.getIR();
@@ -161,6 +168,20 @@ void loop()
   //Continuously taking samples from MAX30102. Heart rate and SpO2 are calculated every 1 second
   while (1)
   {
+	  
+	  heart_msg.data = heartRate;
+      spo2_msg.data = spo2;
+          
+      pub_heart.publish(&heart_msg);
+      pub_spo2.publish(&spo2_msg);
+
+      /*  This likely only needed for subscribers. Since this program only publishes can likely be removed.
+       *  More research. 
+      */
+      node.spinOnce();
+	  
+	  
+	  
     //dumping the first 25 sets of samples in the memory and shift the last 75 sets of samples to the top
     for (byte i = 25; i < 100; i++)
     {
@@ -204,18 +225,9 @@ void loop()
 //  	  Serial.print(F(", TEMP="));
 //  	  Serial.println( mlx.readObjectTempF() );
 
-      heart_msg.data = heartRate;
-      spo2_msg.data = spo2;
-          
-      pub_heart.publish(&heart_msg);
-      pub_spo2.publish(&spo2_msg);
 
-      /*  This likely only needed for subscribers. Since this program only publishes can likely be removed.
-       *  More research. 
-      */
-      node.spinOnce();
     }
-
+/* 
       particleSensor.shutDown();
       for (int k = 0; k >= 30; k++)
       {
@@ -225,7 +237,7 @@ void loop()
         node.spinOnce();
       }
       particleSensor.wakeUp();
-
+ */
     //After gathering 25 new samples recalculate HR and SP02
     maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
   }

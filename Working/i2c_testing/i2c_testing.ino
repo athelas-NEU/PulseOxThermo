@@ -1,11 +1,32 @@
 
 
+// ROS includes START
+#include <ros.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Float32.h>
+// ROS includes END
+
 #include <Wire.h>
 #include <Adafruit_MLX90614.h>
 
 #include "MAX30105.h"
 #include "spo2_algorithm.h"
 
+
+// ROS msgs and Publishers START
+
+std_msgs::Float32 temp_msg;
+ros::Publisher pub_temp("temp", &temp_msg);
+
+std_msgs::Float32 heart_msg;
+ros::Publisher pub_heart("heart", &heart_msg);
+
+std_msgs::Float32 spo2_msg;
+ros::Publisher pub_spo2("spo2", &spo2_msg);
+
+ros::NodeHandle node;
+
+// ROS msgs and Publisher END
 
 // Temp sensor objects
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
