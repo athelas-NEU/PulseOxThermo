@@ -65,9 +65,12 @@ void setup()
   node.advertise(pub_spo2);
 
   //Wire.begin();
+//  Serial.begin(115200);
 
+  
   // Start temp sensor
   mlx.begin();
+
 
   // Initialize PulseOx sensor
   particleSensor.begin(Wire);
@@ -75,6 +78,9 @@ void setup()
   // PulseOx Leds
   pinMode(pulseLED, OUTPUT);
   pinMode(readLED, OUTPUT);
+
+  //Set onboard LED to blink for diagnostic purposes:
+  // pinMode(LED_BUILTIN, OUTPUT);
 
   /* Removed check for PulseOx sensor
     if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
@@ -92,6 +98,7 @@ void setup()
   int adcRange = 4096; //Options: 2048, 4096, 8192, 16384
 
   particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); //Configure sensor with these settings
+
 }
 
 void loop()
@@ -103,49 +110,48 @@ void loop()
   //read the first 100 samples, and determine the signal range
   for (byte i = 0 ; i < bufferLength ; i++)
   {
-    //    while (particleSensor.available() == false) //do we have new data?
-    //      particleSensor.check(); //Check the sensor for new data
+//        while (particleSensor.available() == false) //do we have new data?
+//          particleSensor.check(); //Check the sensor for new data
 
     redBuffer[i] = particleSensor.getRed();
     irBuffer[i] = particleSensor.getIR();
     particleSensor.nextSample(); //We're finished with this sample so move to next sample
 
-    //    Serial.print(F("red="));
-    //    Serial.print(redBuffer[i], DEC);
-    //    Serial.print(F(", ir="));
-    //    Serial.println(irBuffer[i], DEC);
+//        Serial.print(F("red="));
+//        Serial.print(redBuffer[i], DEC);
+//        Serial.print(F(", ir="));
+//        Serial.println(irBuffer[i], DEC);
   }
 
   //calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
   maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
 
   //Continuously taking samples from MAX30102. Heart rate and SpO2 are calculated every 1 second
+
+for (int k = 0; k < 7; k++)
+{
+  int wait = 250;
+  digitalWrite(readLED, HIGH); //Blink onboard LED with every data read
+  delay(wait);                       // wait for a second
+  digitalWrite(readLED, LOW); 
+  delay(wait);                
+}
+delay(200);
+  
   while (1)
   {
+    temp_msg.data = mlx.readObjectTempF();
 
-//    Serial.print(", TEMP=");
-//    Serial.println(mlx.readObjectTempF());
-//
-//    Serial.print(F(", HR="));
-//    Serial.println(heartRate, DEC);
-//
-//    Serial.print(F(", SPO2="));
-//    Serial.println(spo2, DEC);
-
-     digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
-  temp_msg.data = mlx.readObjectTempF();
-    
     heart_msg.data = heartRate;
-      spo2_msg.data = spo2;
+    spo2_msg.data = spo2;
 
-          pub_temp.publish(&temp_msg);
-      pub_heart.publish(&heart_msg);
-      pub_spo2.publish(&spo2_msg);
+    pub_temp.publish(&temp_msg);
+    pub_heart.publish(&heart_msg);
+    pub_spo2.publish(&spo2_msg);
 
-      /*  This likely only needed for subscribers. Since this program only publishes can likely be removed.
-       *  More research. 
-      */
-      node.spinOnce();
+    node.spinOnce();
+
+    digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
 
 
     //dumping the first 25 sets of samples in the memory and shift the last 75 sets of samples to the top
@@ -170,23 +176,23 @@ void loop()
       particleSensor.nextSample(); //We're finished with this sample so move to next sample
 
       //send samples and calculation result to terminal program through UART
-      //      Serial.print(F("red="));
-      //      Serial.print(redBuffer[i], DEC);
-      //      Serial.print(F(", ir="));
-      //      Serial.print(irBuffer[i], DEC);
-      //
-//            Serial.print(F(", HR="));
-//            Serial.print(heartRate, DEC);
-      //
-      //      Serial.print(F(", HRvalid="));
-      //      Serial.print(validHeartRate, DEC);
-      //
-//            Serial.print(F(", SPO2="));
-//            Serial.print(spo2, DEC);
-      //
-//            Serial.print(F(", SPO2Valid="));
-//            Serial.println(validSPO2, DEC);
-      //
+//            Serial.print(F("red="));
+//            Serial.print(redBuffer[i], DEC);
+//            Serial.print(F(", ir="));
+//            Serial.print(irBuffer[i], DEC);
+//      
+//                  Serial.print(F(", HR="));
+//                  Serial.print(heartRate, DEC);
+//      
+//            Serial.print(F(", HRvalid="));
+//            Serial.print(validHeartRate, DEC);
+//      
+//                  Serial.print(F(", SPO2="));
+//                  Serial.print(spo2, DEC);
+//      
+//                  Serial.print(F(", SPO2Valid="));
+//                  Serial.println(validSPO2, DEC);
+      
 
     }
 
