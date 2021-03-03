@@ -57,7 +57,13 @@ byte readLED = 13; //Blinks with each data read
 
 void setup()
 {
-  Serial.begin(115200);
+
+  // Init ROS node
+  node.initNode();
+  node.advertise(pub_temp);
+  node.advertise(pub_heart);
+  node.advertise(pub_spo2);
+
   Wire.begin();
 
   // Start temp sensor
@@ -117,14 +123,26 @@ void loop()
   while (1)
   {
 
-    Serial.print(", TEMP=");
-    Serial.println(mlx.readObjectTempF());
+//    Serial.print(", TEMP=");
+//    Serial.println(mlx.readObjectTempF());
+//
+//    Serial.print(F(", HR="));
+//    Serial.println(heartRate, DEC);
+//
+//    Serial.print(F(", SPO2="));
+//    Serial.println(spo2, DEC);
 
-    Serial.print(F(", HR="));
-    Serial.println(heartRate, DEC);
+     digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
+    heart_msg.data = heartRate;
+      spo2_msg.data = spo2;
+          
+      pub_heart.publish(&heart_msg);
+      pub_spo2.publish(&spo2_msg);
 
-    Serial.print(F(", SPO2="));
-    Serial.println(spo2, DEC);
+      /*  This likely only needed for subscribers. Since this program only publishes can likely be removed.
+       *  More research. 
+      */
+      node.spinOnce();
 
 
     //dumping the first 25 sets of samples in the memory and shift the last 75 sets of samples to the top
