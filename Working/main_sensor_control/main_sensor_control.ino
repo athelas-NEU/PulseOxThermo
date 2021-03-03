@@ -95,7 +95,7 @@ void setup()
   node.advertise(pub_heart);
   node.advertise(pub_spo2);
 
-Wire.begin();
+//  Wire.begin();
 
   
   mlx.begin();  
