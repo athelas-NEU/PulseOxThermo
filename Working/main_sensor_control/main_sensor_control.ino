@@ -87,6 +87,17 @@ void setup()
   //Serial.begin(115200); // initialize serial communication at 115200 bits per second:
   
   // Start temp sensor
+  
+
+    // Init ROS node
+  node.initNode();
+  node.advertise(pub_temp);
+  node.advertise(pub_heart);
+  node.advertise(pub_spo2);
+
+Wire.begin();
+
+  
   mlx.begin();  
 
   // PulseOx Leds
@@ -95,19 +106,7 @@ void setup()
 
   // Initialize PulseOx sensor
   particleSensor.begin(Wire, I2C_SPEED_FAST);
-
-  // Init ROS node
-  node.initNode();
-  node.advertise(pub_temp);
-  node.advertise(pub_heart);
-  node.advertise(pub_spo2);
   
-  
-    // Init ROS node
-  node.initNode();
-  node.advertise(pub_temp);
-  node.advertise(pub_heart);
-  node.advertise(pub_spo2);
 
   //pinmode(a0, OUTPUT);
   //digitalWrite(a0, HIGH)l;
@@ -168,10 +167,13 @@ void loop()
   //Continuously taking samples from MAX30102. Heart rate and SpO2 are calculated every 1 second
   while (1)
   {
-	  
+
+    digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
+	  temp_msg.data = mlx.readObjectTempF();
 	  heart_msg.data = heartRate;
       spo2_msg.data = spo2;
-          
+      
+        pub_temp.publish(&temp_msg);
       pub_heart.publish(&heart_msg);
       pub_spo2.publish(&spo2_msg);
 
