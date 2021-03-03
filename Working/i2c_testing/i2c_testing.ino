@@ -133,9 +133,12 @@ void loop()
 //    Serial.println(spo2, DEC);
 
      digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
+  temp_msg.data = mlx.readObjectTempF();
+    
     heart_msg.data = heartRate;
       spo2_msg.data = spo2;
-          
+
+          pub_temp.publish(&temp_msg);
       pub_heart.publish(&heart_msg);
       pub_spo2.publish(&spo2_msg);
 
