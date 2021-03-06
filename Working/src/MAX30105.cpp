@@ -135,6 +135,9 @@ static const uint8_t SLOT_GREEN_PILOT = 		0x07;
 
 static const uint8_t MAX_30105_EXPECTEDPARTID = 0x15;
 
+// safeCheck(): Check for new data but give up after a certain amount of time 
+uint8_t checkTime = 250;
+
 MAX30105::MAX30105() {
   // Constructor
 }
@@ -532,7 +535,7 @@ uint8_t MAX30105::available(void)
 uint32_t MAX30105::getRed(void)
 {
   //Check the sensor for new data for 250ms
-  if(safeCheck(250))
+  if(safeCheck(checkTime))
     return (sense.red[sense.head]);
   else
     return(0); //Sensor failed to find new data
@@ -542,7 +545,7 @@ uint32_t MAX30105::getRed(void)
 uint32_t MAX30105::getIR(void)
 {
   //Check the sensor for new data for 250ms
-  if(safeCheck(250))
+  if(safeCheck(checkTime))
     return (sense.IR[sense.head]);
   else
     return(0); //Sensor failed to find new data
@@ -552,7 +555,7 @@ uint32_t MAX30105::getIR(void)
 uint32_t MAX30105::getGreen(void)
 {
   //Check the sensor for new data for 250ms
-  if(safeCheck(250))
+  if(safeCheck(checkTime))
     return (sense.green[sense.head]);
   else
     return(0); //Sensor failed to find new data

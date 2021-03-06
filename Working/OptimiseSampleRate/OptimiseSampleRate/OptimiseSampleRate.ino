@@ -90,20 +90,22 @@ void setup()
   pinMode(pulseLED, OUTPUT);
   pinMode(readLED, OUTPUT);
 
-  byte ledBrightness = 60; //Options: 0=Off to 255=50mA
-  byte sampleAverage = 4; //Options: 1, 2, 4, 8, 16, 32
+  byte ledBrightness = 200; //Options: 0=Off to 255=50mA
+  byte sampleAverage = 1; //Options: 1, 2, 4, 8, 16, 32
   byte ledMode = 2; //Options: 1 = Red only, 2 = Red + IR, 3 = Red + IR + Green
-  byte sampleRate = 100; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
-  int pulseWidth = 411; //Options: 69, 118, 215, 411
-  int adcRange = 4096; //Options: 2048, 4096, 8192, 16384
+  byte sampleRate = 3200; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
+  int pulseWidth = 69; //Options: 69, 118, 215, 411
+  int adcRange = 16384; //Options: 2048, 4096, 8192, 16384
 
-  particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); //Configure sensor with these settings
+  //Configure sensor with these settings
+  particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); 
 
 }
 
 void loop()
 {
 
+// Blink LED to let operator know that the device is working properly before main loop occurs.
   while(!ledGoBrrr)
   {
     for (int k = 0; k < 7; k++)

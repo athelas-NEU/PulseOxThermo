@@ -136,12 +136,10 @@ for (int k = 0; k < 7; k++)
   digitalWrite(readLED, LOW); 
   delay(wait);                
 }
-delay(200);
   
   while (1)
   {
     temp_msg.data = mlx.readObjectTempF();
-
     heart_msg.data = heartRate;
     spo2_msg.data = spo2;
 

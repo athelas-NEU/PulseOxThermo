@@ -104,7 +104,9 @@ void maxim_heart_rate_and_oxygen_saturation(uint32_t *pun_ir_buffer, int32_t n_i
 
   // calculates DC mean and subtract DC from ir
   un_ir_mean =0; 
-  for (k=0 ; k<n_ir_buffer_length ; k++ ) un_ir_mean += pun_ir_buffer[k] ;
+  for (k=0 ; k<n_ir_buffer_length ; k++ ) 
+	  un_ir_mean += pun_ir_buffer[k] ;
+  
   un_ir_mean =un_ir_mean/n_ir_buffer_length ;
     
   // remove DC and invert signal so that we can use peak detector as valley detector

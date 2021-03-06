@@ -173,7 +173,7 @@ void loop()
 	  heart_msg.data = heartRate;
       spo2_msg.data = spo2;
       
-        pub_temp.publish(&temp_msg);
+      pub_temp.publish(&temp_msg);
       pub_heart.publish(&heart_msg);
       pub_spo2.publish(&spo2_msg);
 
