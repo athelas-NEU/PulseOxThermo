@@ -63,7 +63,7 @@ bool ledGoBrrr = false;
 
 void setup()
 {
-  Serial.begin(57600);
+  //Serial.begin(57600);
   // Serial.println("Initializing...");
 
 //  // Init ROS node
