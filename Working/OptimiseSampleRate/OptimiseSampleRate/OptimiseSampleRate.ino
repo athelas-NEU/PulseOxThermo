@@ -63,7 +63,7 @@ bool ledGoBrrr = false;
 
 void setup()
 {
-  Serial.begin(57600);
+  //Serial.begin(57600);
   // Serial.println("Initializing...");
 
 //  // Init ROS node
@@ -176,10 +176,6 @@ void loop()
       pub_temp.publish(&temp_msg);
       pub_heart.publish(&heart_msg);
       pub_spo2.publish(&spo2_msg);
-
-  
-//      Serial.println( heartRate, DEC);
-//      Serial.println(spo2, DEC);
 
       node.spinOnce();
   }
