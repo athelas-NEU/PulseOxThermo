@@ -1,7 +1,7 @@
 // ROS includes START
 #include <ros.h>
 #include <std_msgs/String.h>
-#include <std_msgs/Float32.h>
+#include <std_msgs/Float32MultiArray.h>
 // ROS includes END
 
 #include <Wire.h>
@@ -12,13 +12,13 @@
 #include "spo2_algorithm.h"
 
 // ROS msgs and Publishers START
-std_msgs::Float32 temp_msg;
+std_msgs::Float32MultiArray temp_msg;
 ros::Publisher pub_temp("temp", &temp_msg);
 
-std_msgs::Float32 heart_msg;
+std_msgs::Float32MultiArray heart_msg;
 ros::Publisher pub_heart("heart", &heart_msg);
 
-std_msgs::Float32 spo2_msg;
+std_msgs::Float32MultiArray spo2_msg;
 ros::Publisher pub_spo2("spo2", &spo2_msg);
 
 ros::NodeHandle node;
@@ -63,14 +63,29 @@ bool ledGoBrrr = false;
 
 void setup()
 {
-  Serial.begin(57600);
+//  Serial.begin(57600);
   // Serial.println("Initializing...");
 
-//  // Init ROS node
-//  node.initNode();
-//  node.advertise(pub_temp);
-//  node.advertise(pub_heart);
-//  node.advertise(pub_spo2);
+  temp_msg.layout.dim[0].size = 1;
+  temp_msg.layout.data_offset = 0;
+  temp_msg.data = (float *)malloc(sizeof(float));
+  temp_msg.data_length = 1;
+
+  heart_msg.layout.dim[0].size = 1;
+  heart_msg.layout.data_offset = 0;
+  heart_msg.data = (float *)malloc(sizeof(float));
+  heart_msg.data_length = 1;
+
+  spo2_msg.layout.dim[0].size = 1;
+  spo2_msg.layout.data_offset = 0;
+  spo2_msg.data = (float *)malloc(sizeof(float));
+  spo2_msg.data_length = 1;
+
+  // Init ROS node
+  node.initNode();
+  node.advertise(pub_temp);
+  node.advertise(pub_heart);
+  node.advertise(pub_spo2);
 
 //  // Initialize sensor
 //  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
@@ -82,11 +97,9 @@ void setup()
 
   // Start temp sensor
   mlx.begin();
-  Serial.println("starting temp");
   
   // Start PulseOx sensor
   particleSensor.begin(Wire, I2C_SPEED_FAST);
-  Serial.println("starting pulseox");
 
   // PulseOx Leds
   pinMode(pulseLED, OUTPUT);
@@ -101,7 +114,6 @@ void setup()
 
   //Configure sensor with these settings
   particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); 
-  Serial.println("done setup");
 
 }
 
@@ -127,11 +139,8 @@ void loop()
     {
       digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
       redBuffer[i] = particleSensor.getRed();
-      Serial.println("red");
       irBuffer[i] = particleSensor.getIR();
-      Serial.println("ir");
       particleSensor.nextSample(); //We're finished with this sample so move to next sample
-      Serial.println("got sample");
 
 
     }
@@ -176,21 +185,13 @@ void loop()
   //    }
   //  }
   
-//      temp_msg.data = mlx.readObjectTempF();
-//      heart_msg.data = heartRate;
-//      spo2_msg.data = spo2;
-//  
-//      pub_temp.publish(&temp_msg);
-//      pub_heart.publish(&heart_msg);
-//      pub_spo2.publish(&spo2_msg);
-
-      Serial.println(mlx.readObjectTempF());
-      Serial.println( heartRate, DEC);
-      Serial.println(spo2, DEC);
-
+      temp_msg.data[0] = mlx.readObjectTempF();
+      heart_msg.data[0] = heartRate;
+      spo2_msg.data[0] = spo2;
   
-//      Serial.println( heartRate, DEC);
-//      Serial.println(spo2, DEC);
+      pub_temp.publish(&temp_msg);
+      pub_heart.publish(&heart_msg);
+      pub_spo2.publish(&spo2_msg);
 
       node.spinOnce();
   }
