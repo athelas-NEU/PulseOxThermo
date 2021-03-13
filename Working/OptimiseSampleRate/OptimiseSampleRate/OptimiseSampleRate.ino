@@ -67,10 +67,10 @@ void setup()
   // Serial.println("Initializing...");
 
 //  // Init ROS node
-  node.initNode();
-  node.advertise(pub_temp);
-  node.advertise(pub_heart);
-  node.advertise(pub_spo2);
+//  node.initNode();
+//  node.advertise(pub_temp);
+//  node.advertise(pub_heart);
+//  node.advertise(pub_spo2);
 
 //  // Initialize sensor
 //  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
@@ -82,9 +82,11 @@ void setup()
 
   // Start temp sensor
   mlx.begin();
+  Serial.println("starting temp");
   
   // Start PulseOx sensor
   particleSensor.begin(Wire, I2C_SPEED_FAST);
+  Serial.println("starting pulseox");
 
   // PulseOx Leds
   pinMode(pulseLED, OUTPUT);
@@ -99,6 +101,7 @@ void setup()
 
   //Configure sensor with these settings
   particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); 
+  Serial.println("done setup");
 
 }
 
@@ -108,6 +111,7 @@ void loop()
 // Blink LED to let operator know that the device is working properly before main loop occurs.
   while(!ledGoBrrr)
   {
+    Serial.println("blinking led");
     for (int k = 0; k < 7; k++)
       {
         int wait = 250;
@@ -123,8 +127,11 @@ void loop()
     {
       digitalWrite(readLED, !digitalRead(readLED)); //Blink onboard LED with every data read
       redBuffer[i] = particleSensor.getRed();
+      Serial.println("red");
       irBuffer[i] = particleSensor.getIR();
+      Serial.println("ir");
       particleSensor.nextSample(); //We're finished with this sample so move to next sample
+      Serial.println("got sample");
 
 
     }
@@ -169,17 +176,17 @@ void loop()
   //    }
   //  }
   
-      temp_msg.data = mlx.readObjectTempF();
-      heart_msg.data = heartRate;
-      spo2_msg.data = spo2;
-  
-      pub_temp.publish(&temp_msg);
-      pub_heart.publish(&heart_msg);
-      pub_spo2.publish(&spo2_msg);
+//      temp_msg.data = mlx.readObjectTempF();
+//      heart_msg.data = heartRate;
+//      spo2_msg.data = spo2;
+//  
+//      pub_temp.publish(&temp_msg);
+//      pub_heart.publish(&heart_msg);
+//      pub_spo2.publish(&spo2_msg);
 
-  
-//      Serial.println( heartRate, DEC);
-//      Serial.println(spo2, DEC);
+      Serial.println(mlx.readObjectTempF());
+      Serial.println( heartRate, DEC);
+      Serial.println(spo2, DEC);
 
       node.spinOnce();
   }
