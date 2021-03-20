@@ -39,6 +39,10 @@ Temp Sensor:
 - Vin: Red
 - GND: Black
 
+PulseOx:
+- Interrupt Pin is digital pin 10 on Arduino
+- All others as labelled
+
 Wire run lengths: 32 inches from the end effector to the opening of the box.
 
 #### Pulse Ox Register Values to be effective
