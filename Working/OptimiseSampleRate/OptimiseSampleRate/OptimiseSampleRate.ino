@@ -11,6 +11,9 @@
 #include "heartRate.h"
 #include "spo2_algorithm.h"
 
+// Set to true to print statements to track program flow.
+bool DIAG = true;
+
 // ROS msgs and Publishers START
 std_msgs::Float32MultiArray temp_msg;
 ros::Publisher pub_temp("temp", &temp_msg);
@@ -110,7 +113,7 @@ void setup()
   byte ledMode = 2; //Options: 1 = Red only, 2 = Red + IR, 3 = Red + IR + Green
   int sampleRate = 200; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
   int pulseWidth = 69; //Options: 69, 118, 215, 411
-  int adcRange = 8196; //Options: 2048, 4096, 8192, 16384
+  int adcRange = 4096; //Options: 2048, 4096, 8192, 16384
 
   //Configure sensor with these settings
   particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); 
@@ -123,7 +126,11 @@ void loop()
 // Blink LED to let operator know that the device is working properly before main loop occurs.
   while(!ledGoBrrr)
   {
-    Serial.println("blinking led");
+    // DIAG PRINT STATEMENT
+    if(DIAG){
+      Serial.println("Blinking LED at Start");
+    }
+    
     for (int k = 0; k < 7; k++)
       {
         int wait = 250;
@@ -134,6 +141,11 @@ void loop()
       }
       ledGoBrrr = true;
   }
+
+  // DIAG PRINT STATEMENT
+  if(DIAG){
+    Serial.println("Initial Sample Read");
+  }
   
   for (byte i = 0 ; i < bufferLength ; i++)
     {
@@ -141,12 +153,15 @@ void loop()
       redBuffer[i] = particleSensor.getRed();
       irBuffer[i] = particleSensor.getIR();
       particleSensor.nextSample(); //We're finished with this sample so move to next sample
-
-
     }
 
-//  //calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
+//  calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
 //  maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
+
+  // DIAG PRINT STATEMENT
+  if(DIAG){
+    Serial.println("Continuous Loop Begin");
+  }
 
   while(1){
       //take 15 sets of samples before calculating the heart rate.
