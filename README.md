@@ -32,6 +32,20 @@ src holds dependencies.
 4. The reason for the **Always Publish** model is so that the Jetson Nano won't need to send a command to the biosensor arduino. It can be totally passive in that regard.
   - Would be nice to turn the sensors off, but lack of time makes it a future issue.
 
+#### Pinouts & Wire Runs
+Temp Sensor:
+- SCL: orange
+- SDA: Yellow
+- Vin: Red
+- GND: Black
+
+Wire run lengths: 32 inches from the end effector to the opening of the box.
+
+#### Pulse Ox Register Values to be effective
+adc for both leds 0x27
+
+brightness for both leds 0x3F 
+
 #### Useful Links
 - [Install Melodic Ros on Ubuntu](https://wiki.ros.org/melodic/Installation/Ubuntu)
 - [ROS Tutorials](https://wiki.ros.org/ROS/Tutorials)
