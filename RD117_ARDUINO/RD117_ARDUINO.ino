@@ -47,10 +47,16 @@ ros::Publisher pub_spo2("spo2", &spo2_msg);
 
 ros::NodeHandle node;
 
-//#define DEBUG // Uncomment for debug output to the Serial stream
-              // Must Uncomment serial as well.
-//#define SERIAL // Uncomment for serial print at 115200 baud
-//#define TEST_MAXIM_ALGORITHM // Uncomment if you want to include results returned by the original MAXIM algorithm
+// Uncomment for debug output to the Serial stream 115200 baud
+// #define DEBUG 
+
+// Uncomment for serial print at 115200 baud
+// #define SERIAL 
+
+// Uncomment if you want to include results returned 
+// by the original MAXIM algorithm.
+// DEBUG MUST BE DEFINED AS WELL
+// #define TEST_MAXIM_ALGORITHM 
 
 #ifdef TEST_MAXIM_ALGORITHM
   #include "algorithm.h" 
@@ -88,7 +94,7 @@ void setup() {
 
   Wire.begin();
 
-#if defined (SERIAL)
+#if defined (SERIAL) || defined (DEBUG)
   // initialize serial communication at 115200 bits per second:
   Serial.begin(115200);
 #endif // SERIAL
@@ -114,7 +120,7 @@ void setup() {
 #ifdef TEST_MAXIM_ALGORITHM
   Serial.print(F("Time[s]\tSpO2\tHR\tSpO2_MX\tHR_MX\tClock\tRatio\tCorr"));
 #else // TEST_MAXIM_ALGORITHM
-  Serial.print(F("Time[s]\tSpO2\tHR\tClock\tRatio\tCorr"));
+  Serial.print(F("Time[s]\tSpO2\tHR\tClock\tRatio\tCorr\n"));
 #endif // TEST_MAXIM_ALGORITHM
 #endif // SERIAL
 
@@ -147,14 +153,14 @@ void loop() {
     while(digitalRead(oxiInt)==1);  //wait until the interrupt pin asserts
     maxim_max30102_read_fifo((aun_red_buffer+i), (aun_ir_buffer+i));  //read from MAX30102 FIFO
     
-#if defined (DEBUG) && defined (SERIAL)
+#if defined (DEBUG)
   Serial.print(i, DEC);
   Serial.print(F("\t"));
   Serial.print(aun_red_buffer[i], DEC);
   Serial.print(F("\t"));
   Serial.print(aun_ir_buffer[i], DEC);    
   Serial.println("");
-#endif // DEBUG && SERIAL
+#endif // DEBUG
   }
 
   //calculate heart rate and SpO2 after BUFFER_SIZE samples (ST seconds of samples) using Robert's method
@@ -163,7 +169,7 @@ void loop() {
   millis_to_hours(elapsedTime,hr_str); // Time in hh:mm:ss format
   elapsedTime/=1000; // Time in seconds
 
-#if defined (DEBUG) && defined (SERIAL)
+#if defined (DEBUG)
   Serial.println("--RF--");
   Serial.print(elapsedTime);
   Serial.print("\t");
@@ -173,7 +179,7 @@ void loop() {
   Serial.print("\t");
   Serial.println(hr_str);
   Serial.println("------");
-#endif // DEBUG && SERIAL
+#endif // DEBUG
 
 #ifdef TEST_MAXIM_ALGORITHM
   //calculate heart rate and SpO2 after BUFFER_SIZE samples (ST seconds of samples) using MAXIM's method
@@ -182,7 +188,7 @@ void loop() {
   int32_t n_heart_rate_maxim; //heart rate value
   int8_t  ch_hr_valid_maxim;  //indicator to show if the heart rate calculation is valid
   maxim_heart_rate_and_oxygen_saturation(aun_ir_buffer, BUFFER_SIZE, aun_red_buffer, &n_spo2_maxim, &ch_spo2_valid_maxim, &n_heart_rate_maxim, &ch_hr_valid_maxim); 
-#if defined (DEBUG) && defined (SERIAL)
+#if defined (DEBUG)
   Serial.println("--MX--");
   Serial.print(elapsedTime);
   Serial.print("\t");
@@ -192,7 +198,7 @@ void loop() {
   Serial.print("\t");
   Serial.println(hr_str);
   Serial.println("------");
-#endif // DEBUG && SERIAL
+#endif // DEBUG
 #endif // TEST_MAXIM_ALGORITHM
 
 #ifdef SERIAL
@@ -221,6 +227,8 @@ void loop() {
       Serial.print(ratio);
       Serial.print("\t");
       Serial.print(correl);
+      Serial.println();
+      //Serial.println(" -- MADE IT TO SERIAL Print-- ");
 #endif // SERIAL
       old_n_spo2=n_spo2;
     }
