@@ -29,16 +29,32 @@
 *
 * ------------------------------------------------------------------------- */
 
+// ROS includes START
+#include <ros.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Float32MultiArray.h>
+// ROS includes END
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
 #include "algorithm_by_RF.h"
 #include "max30102.h"
 
-#define DEBUG // Uncomment for debug output to the Serial stream
+//#define DEBUG // Uncomment for debug output to the Serial stream
 //#define USE_ADALOGGER // Comment out if you don't have ADALOGGER itself but your MCU still can handle this code
 //#define TEST_MAXIM_ALGORITHM // Uncomment if you want to include results returned by the original MAXIM algorithm
 //#define SAVE_RAW_DATA // Uncomment if you want raw data coming out of the sensor saved to SD card. Red signal first, IR second.
+
+// ROS msgs and Publishers START
+std_msgs::Float32MultiArray heart_msg;
+ros::Publisher pub_heart("heart", &heart_msg);
+
+std_msgs::Float32MultiArray spo2_msg;
+ros::Publisher pub_spo2("spo2", &spo2_msg);
+
+ros::NodeHandle node;
+// ROS msgs and Publisher END
 
 #ifdef USE_ADALOGGER
   #include <SD.h>
@@ -71,6 +87,22 @@ uint8_t uch_dummy,k;
 
 void setup() {
 
+  heart_msg.layout.dim[0].size = 1;
+  heart_msg.layout.data_offset = 0;
+  heart_msg.data = (float *)malloc(sizeof(float));
+  heart_msg.data_length = 1;
+
+  spo2_msg.layout.dim[0].size = 1;
+  spo2_msg.layout.data_offset = 0;
+  spo2_msg.data = (float *)malloc(sizeof(float));
+  spo2_msg.data_length = 1;
+
+  // Init ROS node
+  node.initNode();
+  node.advertise(pub_heart);
+  node.advertise(pub_spo2);
+
+
   pinMode(oxiInt, INPUT);  //pin D10 connects to the interrupt output pin of the MAX30102
 
 #ifdef USE_ADALOGGER
@@ -86,7 +118,7 @@ void setup() {
 
 #if defined(DEBUG) || !defined(USE_ADALOGGER)
   // initialize serial communication at 115200 bits per second:
-  Serial.begin(115200);
+  // Serial.begin(115200); When ROS no need of this.
 #endif
 
   maxim_max30102_reset(); //resets the MAX30102
@@ -171,11 +203,11 @@ void setup() {
 
 #else // USE_ADALOGGER
 
-  while(Serial.available()==0)  //wait until user presses a key
-  {
-    Serial.println(F("Press any key to start conversion"));
-    delay(1000);
-  }
+//  while(Serial.available()==0)  //wait until user presses a key
+//  {
+//    Serial.println(F("Press any key to start conversion"));
+//    delay(1000);
+//  }
   uch_dummy=Serial.read();
 #ifdef TEST_MAXIM_ALGORITHM
   Serial.print(F("Time[s]\tSpO2\tHR\tSpO2_MX\tHR_MX\tClock\tRatio\tCorr"));
@@ -204,6 +236,7 @@ void setup() {
 
 //Continuously taking samples from MAX30102.  Heart rate and SpO2 are calculated every ST seconds
 void loop() {
+
   float n_spo2,ratio,correl;  //SPO2 value
   int8_t ch_spo2_valid;  //indicator to show if the SPO2 calculation is valid
   int32_t n_heart_rate; //heart rate value
@@ -347,6 +380,22 @@ void loop() {
     Serial.println("");
 #endif // USE_ADALOGGER
     old_n_spo2=n_spo2;
+    
+// ROS Publish Begin
+      heart_msg.data[0] = n_heart_rate;
+      spo2_msg.data[0] = n_spo2;
+
+      if(n_heart_rate != -999){
+        pub_heart.publish(&heart_msg);
+      }
+      
+      if(n_spo2 != -999){
+        pub_spo2.publish(&spo2_msg);
+      }
+      
+      node.spinOnce();
+// Ros Publish End
+    
   }
 }
 
