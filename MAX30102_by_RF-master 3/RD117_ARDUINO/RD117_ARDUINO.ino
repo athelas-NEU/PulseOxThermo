@@ -385,13 +385,13 @@ void loop() {
       heart_msg.data[0] = n_heart_rate;
       spo2_msg.data[0] = n_spo2;
 
-      if(n_heart_rate != -999){
+
         pub_heart.publish(&heart_msg);
-      }
       
-      if(n_spo2 != -999){
+      
+
         pub_spo2.publish(&spo2_msg);
-      }
+      
       
       node.spinOnce();
 // Ros Publish End
