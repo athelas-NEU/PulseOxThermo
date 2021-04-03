@@ -1,10 +1,8 @@
 # PulseOxThermo
 Place for John and Christian to work on combining the biosensor code.
 
-## Code Directory
-Working -> Main -> main_sensor_control.ino
-
-src holds dependencies.
+## Current Pulse Ox File to Use
+PulseOxThermo -> RD117_ARDUINO -> RD117_ARDUINO.ino
 
 ### Immediate Next Steps
 1. ~~Add the sensor_control.ino code into main code loop.~~
