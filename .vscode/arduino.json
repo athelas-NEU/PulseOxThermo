@@ -1,0 +1,6 @@
+{
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "sketch": "RD117_ARDUINO/RD117_ARDUINO.ino",
+    "port": "/dev/ttyACM0"
+}

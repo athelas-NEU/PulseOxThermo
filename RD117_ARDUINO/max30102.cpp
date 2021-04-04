@@ -136,9 +136,9 @@ bool maxim_max30102_init()
   if(!maxim_max30102_write_reg(REG_SPO2_CONFIG,0x27))  // SPO2_ADC range = 4096nA, SPO2 sample rate (100 Hz), LED pulseWidth (411uS)
     return false;
   
-  if(!maxim_max30102_write_reg(REG_LED1_PA,0x3F))   //Choose value for ~ 7mA for LED1
+  if(!maxim_max30102_write_reg(REG_LED1_PA,0x24))   //Choose value for ~ 7mA for LED1
     return false;
-  if(!maxim_max30102_write_reg(REG_LED2_PA,0x3F))   // Choose value for ~ 7mA for LED2
+  if(!maxim_max30102_write_reg(REG_LED2_PA,0x24))   // Choose value for ~ 7mA for LED2
     return false;
   if(!maxim_max30102_write_reg(REG_PILOT_PA,0x7f))   // Choose value for ~ 25mA for Pilot LED
     return false;

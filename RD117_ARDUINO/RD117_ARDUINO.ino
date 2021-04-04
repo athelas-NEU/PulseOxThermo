@@ -51,7 +51,7 @@ ros::NodeHandle node;
 // #define DEBUG
 
 // Uncomment for serial print at 115200 baud
-// #define SERIAL
+// #define USE_SERIAL
 
 // Uncomment if you want to include results returned
 // by the original MAXIM algorithm.
@@ -84,20 +84,20 @@ void setup() {
   spo2_msg.data = (float *)malloc(sizeof(float));
   spo2_msg.data_length = 1;
 
-#ifndef SERIAL
+#ifndef USE_SERIAL
   node.initNode();
   node.advertise(pub_heart);
   node.advertise(pub_spo2);
-#endif // not SERIAL
+#endif // not USE_SERIAL
 
   pinMode(oxiInt, INPUT);  //pin D10 connects to the interrupt output pin of the MAX30102
 
   Wire.begin();
 
-#if defined (SERIAL) || defined (DEBUG)
+#if defined (USE_SERIAL) || defined (DEBUG)
   // initialize serial communication at 115200 bits per second:
   Serial.begin(115200);
-#endif // SERIAL || Debug
+#endif // USE_SERIAL || Debug
 
   maxim_max30102_reset(); //resets the MAX30102
   delay(1000);
@@ -109,24 +109,24 @@ void setup() {
 
   old_n_spo2 = 0.0;
 
-#if defined (SERIAL) || defined (DEBUG)
+#if defined (USE_SERIAL) || defined (DEBUG)
   while (Serial.available() == 0) //wait until user presses a key
   {
     Serial.println(F("Press any key to start conversion"));
     delay(1000);
   }
-#endif // SERIAL || Debug
+#endif // USE_SERIAL || Debug
 
   uch_dummy = Serial.read();
 
 
-#ifdef SERIAL
+#ifdef USE_SERIAL
 #ifdef TEST_MAXIM_ALGORITHM
   Serial.print(F("Time[s]\tSpO2\tHR\tSpO2_MX\tHR_MX\tClock\tRatio\tCorr"));
 #else // TEST_MAXIM_ALGORITHM
   Serial.print(F("Time[s]\tSpO2\tHR\tClock\tRatio\tCorr\n"));
 #endif // TEST_MAXIM_ALGORITHM
-#endif // SERIAL
+#endif // USE_SERIAL
 
   timeStart = millis();
 
@@ -140,16 +140,6 @@ void loop() {
   int8_t  ch_hr_valid;  //indicator to show if the heart rate calculation is valid
   int32_t i;
   char hr_str[10];
-
-#ifndef SERIAL
-  heart_msg.data[0] = n_heart_rate;
-  spo2_msg.data[0] = n_spo2;
-
-  pub_heart.publish(&heart_msg);
-  pub_spo2.publish(&spo2_msg);
-
-  node.spinOnce();
-#endif // not SERIAL
 
   //buffer length of BUFFER_SIZE stores ST seconds of samples running at FS sps
   //read BUFFER_SIZE samples, and determine the signal range
@@ -206,13 +196,13 @@ void loop() {
 #endif // DEBUG
 #endif // TEST_MAXIM_ALGORITHM
 
-#ifdef SERIAL
 #ifdef TEST_MAXIM_ALGORITHM
   if (ch_hr_valid && ch_spo2_valid || ch_hr_valid_maxim && ch_spo2_valid_maxim) {
 #else   // TEST_MAXIM_ALGORITHM
   if (ch_hr_valid && ch_spo2_valid) {
 #endif // TEST_MAXIM_ALGORITHM
 
+#ifdef USE_SERIAL
     Serial.print(elapsedTime);
     Serial.print("\t");
     Serial.print(n_spo2);
@@ -225,21 +215,33 @@ void loop() {
     Serial.print("\t");
     Serial.print(n_heart_rate_maxim, DEC);
     Serial.print("\t");
-
 #endif //TEST_MAXIM_ALGORITHM
+
     Serial.print(hr_str);
     Serial.print("\t");
     Serial.print(ratio);
     Serial.print("\t");
     Serial.print(correl);
     Serial.println();
-    //Serial.println(" -- MADE IT TO SERIAL Print-- ");
-#endif // SERIAL
+    //Serial.println(" -- MADE IT TO USE_SERIAL Print-- ");
+#endif // USE_SERIAL
+
     old_n_spo2 = n_spo2;
 
-  } // End of (ch_hr_valid && ch_spo2_valid)
+#ifndef USE_SERIAL
+    heart_msg.data[0] = n_heart_rate;
+    spo2_msg.data[0] = n_spo2;
 
-} // End of (ch_hr_valid && ch_spo2_valid || ch_hr_valid_maxim && ch_spo2_valid_maxim)
+    pub_heart.publish(&heart_msg);
+    pub_spo2.publish(&spo2_msg);
+
+#endif // not USE_SERIAL
+
+  } // End of (ch_hr_valid && ch_spo2_valid)
+  node.spinOnce();
+}
+
+
 
 void millis_to_hours(uint32_t ms, char* hr_str)
 {
