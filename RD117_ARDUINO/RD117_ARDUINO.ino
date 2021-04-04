@@ -40,10 +40,10 @@
 #include "max30102.h"
 
 std_msgs::Float32MultiArray heart_msg;
-ros::Publisher pub_heart("heart", &heart_msg);
+ros::Publisher pub_heart("biosensors/heart", &heart_msg);
 
 std_msgs::Float32MultiArray spo2_msg;
-ros::Publisher pub_spo2("spo2", &spo2_msg);
+ros::Publisher pub_spo2("biosensors/spo2", &spo2_msg);
 
 ros::NodeHandle node;
 
