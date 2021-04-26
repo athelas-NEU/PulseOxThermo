@@ -1,5 +1,5 @@
 # PulseOxThermo
-Place for John and Christian to work on combining the biosensor code.
+Code for the second Ardunio (which runs the Pulse Oximeter) of the athelas system. 
 
 ## Current Pulse Ox File to Use
 PulseOxThermo -> RD117_ARDUINO -> RD117_ARDUINO.ino
