@@ -9,7 +9,6 @@ PulseOxThermo -> RD117_ARDUINO -> RD117_ARDUINO.ino
 	- Higher ver. use cstring which arduino doesn't use, so the code doesn't compile.
 
 ### Pinouts & Wire Runs
-PulseOx:
 - Interrupt Pin is digital pin 10 on Arduino
 - All others as labelled
 
@@ -29,6 +28,13 @@ The following values can be found in the [max30102.cpp](RD117_ARDUINO/max30102.c
 
 Of note is the brightness needing to be adjusted manually in order to compensate for skin tone variability. The team adjusted the brightness such that it worked for our Athelas members, but it may need to be calibrated differently
 
+#### Useful Links
+- [Install Melodic Ros on Ubuntu](https://wiki.ros.org/melodic/Installation/Ubuntu)
+- [ROS Tutorials](https://wiki.ros.org/ROS/Tutorials)
+- [Controlling via ROS](https://github.com/athelas-NEU/arm-control-ros/wiki/Setup-for-Controlling-via-ROS): From our wiki. Mainly for reference. 
+- [ROS Arduino Temp Sensor example](https://wiki.ros.org/rosserial_arduino/Tutorials/Measuring%20Temperature)
+
+## Striken Through Text Kept for Reference
 ### Plan So Far
 1. ~~All the biosensors hooked up to the arduino will publish to the Jetson Nano ROS node all the time.~~
 2. ~~The Jetson Nano ROS will subscribe to the biosensor data and decide whether to gather it or not.~~
@@ -51,8 +57,4 @@ Of note is the brightness needing to be adjusted manually in order to compensate
 7. ~~Work to include **pressure sensor** and **distance sensor** into the main code loop.~~
   - ~~Focus on getting the biosensor data outputting first. Safety third, as they say on the playa.~~
 
-#### Useful Links
-- [Install Melodic Ros on Ubuntu](https://wiki.ros.org/melodic/Installation/Ubuntu)
-- [ROS Tutorials](https://wiki.ros.org/ROS/Tutorials)
-- [Controlling via ROS](https://github.com/athelas-NEU/arm-control-ros/wiki/Setup-for-Controlling-via-ROS): From our wiki. Mainly for reference. 
-- [ROS Arduino Temp Sensor example](https://wiki.ros.org/rosserial_arduino/Tutorials/Measuring%20Temperature)
+
