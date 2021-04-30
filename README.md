@@ -9,22 +9,20 @@ PulseOxThermo -> RD117_ARDUINO -> RD117_ARDUINO.ino
 	- Higher ver. use cstring which arduino doesn't use or some such.
 
 #### Pinouts & Wire Runs
-Temp Sensor:
-- SCL: orange
-- SDA: Yellow
-- Vin: Red
-- GND: Black
-
 PulseOx:
 - Interrupt Pin is digital pin 10 on Arduino
 - All others as labelled
 
-Wire run lengths: 32 inches from the end effector to the opening of the box.
-
 #### Pulse Ox Register Values to be effective
-adc for both leds 0x27
 
-brightness for both leds 0x3F 
+These settings control the brigtness for the LEDs and the adc conversion rate. 
+
+The following values can be found in the [max30102.cpp](RD117_ARDUINO/max30102.cpp) source file, specifically lines [Lines 136 - 141](https://github.com/athelas-NEU/PulseOxThermo/blob/918f1fb7174216ff736ba9c4da13137edc1819e9/RD117_ARDUINO/max30102.cpp#L136-L141).
+
+- adc for both leds 0x27
+- brightness for both leds 0x3F 
+
+Of note is the brightness needing to be adjusted manually in order to compensate for skin tone variability. The team adjusted the brightness such that it worked for our Athelas members, but it may need to be calibrated differently
 
 ### Plan So Far
 1. All the biosensors hooked up to the arduino will publish to the Jetson Nano ROS node all the time.
@@ -38,8 +36,8 @@ brightness for both leds 0x3F
 1. ~~Add the sensor_control.ino code into main code loop.~~
   - ~~Remove the json parser code from this as it's no longer needed.~~
 2. ~~ROS Publisher model implemented for PulseOx and Temp sensor.~~
-2. Remove extraneous print statements from code loop.
-3. Adjust inner most PulseOx loop as it always runs,
+2. ~~Remove extraneous print statements from code loop. ~~
+3. ~~Adjust inner most PulseOx loop as it always runs, ~~
     - **Or adjust it so safe guards always execute above all other operations.**
     - I worry the serial channel will get clogged with too much junk data when a safety critical service needs to be executed. Though at the 115200 baud rate, it should be more than fast enough.
 5. Move away from string getting sent as data and just move to bytes of the numbers
