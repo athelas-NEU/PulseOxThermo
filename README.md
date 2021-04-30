@@ -25,12 +25,12 @@ The following values can be found in the [max30102.cpp](RD117_ARDUINO/max30102.c
 Of note is the brightness needing to be adjusted manually in order to compensate for skin tone variability. The team adjusted the brightness such that it worked for our Athelas members, but it may need to be calibrated differently
 
 ### Plan So Far
-1. All the biosensors hooked up to the arduino will publish to the Jetson Nano ROS node all the time.
-2. The Jetson Nano ROS will subscribe to the biosensor data and decide whether to gather it or not.
-  - In this way the I2C toggling between data feeds won't need to be an issue.
-3. The distance sensor will always publish it's data as well, and the Jetson Nano will use the data when **Phase 2** movement stage is in progress.
-4. The reason for the **Always Publish** model is so that the Jetson Nano won't need to send a command to the biosensor arduino. It can be totally passive in that regard.
-  - Would be nice to turn the sensors off, but lack of time makes it a future issue.
+1. ~~All the biosensors hooked up to the arduino will publish to the Jetson Nano ROS node all the time.~~
+2. ~~The Jetson Nano ROS will subscribe to the biosensor data and decide whether to gather it or not.~~
+  - ~~In this way the I2C toggling between data feeds won't need to be an issue.~~
+3. ~~The distance sensor will always publish it's data as well, and the Jetson Nano will use the data when **Phase 2** movement stage is in progress.~~
+4. ~~The reason for the **Always Publish** model is so that the Jetson Nano won't need to send a command to the biosensor arduino. It can be totally passive in that regard.~~
+  - ~~Would be nice to turn the sensors off, but lack of time makes it a future issue.~~
   
 ### Immediate Next Steps
 1. ~~Add the sensor_control.ino code into main code loop.~~
