@@ -44,7 +44,7 @@ Of note is the brightness needing to be adjusted manually in order to compensate
 6. ~~Attached to previous, work on decoding those bytes appropriately by moddeling the ROS node in some way.~~
   - ~~Currently Christian is using matlab to practice reading serial data from the arudiono and having the data in string form is making things harder, than when the data is in byte form, and a premade function "decodes" the data upon receipt.~~
 7. ~~Work to include **pressure sensor** and **distance sensor** into the main code loop.~~
-  - ~~Focus on getting the biosensor data outputting first. Safety third, as they say on the playa. ~~
+  - ~~Focus on getting the biosensor data outputting first. Safety third, as they say on the playa.~~
 
 #### Useful Links
 - [Install Melodic Ros on Ubuntu](https://wiki.ros.org/melodic/Installation/Ubuntu)
