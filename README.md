@@ -13,6 +13,10 @@ PulseOx:
 - Interrupt Pin is digital pin 10 on Arduino
 - All others as labelled
 
+### Powering the Sensor
+- Can run off of 3.3 - 5 Volts.
+- SCL, and SDA pins have 4.7k pull up resistors built into the PCB. No need for extra when breadboarding.
+
 #### Pulse Ox Register Values to be effective
 
 These settings control the brigtness for the LEDs and the adc conversion rate. 
