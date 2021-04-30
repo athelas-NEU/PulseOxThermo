@@ -8,7 +8,7 @@ PulseOxThermo -> RD117_ARDUINO -> RD117_ARDUINO.ino
 - When installing **rosserial** library in Arduino IDE ver. **0.7.9** must be used.
 	- Higher ver. use cstring which arduino doesn't use, so the code doesn't compile.
 
-#### Pinouts & Wire Runs
+### Pinouts & Wire Runs
 PulseOx:
 - Interrupt Pin is digital pin 10 on Arduino
 - All others as labelled
@@ -17,9 +17,10 @@ PulseOx:
 - Can run off of 3.3 - 5 Volts.
 - SCL, and SDA pins have 4.7k pull up resistors built into the PCB. No need for extra when breadboarding.
 
-#### Pulse Ox Register Values to be effective
+### Pulse Ox Register Values to be effective
 
-These settings control the brigtness for the LEDs and the adc conversion rate. 
+These settings control the brigtness for the LEDs and the adc conversion rate.
+Shouldn't need to change the adc rate though.
 
 The following values can be found in the [max30102.cpp](RD117_ARDUINO/max30102.cpp) source file, specifically lines [Lines 136 - 141](https://github.com/athelas-NEU/PulseOxThermo/blob/918f1fb7174216ff736ba9c4da13137edc1819e9/RD117_ARDUINO/max30102.cpp#L136-L141).
 
