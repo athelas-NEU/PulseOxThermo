@@ -5,7 +5,7 @@ Code for the second Ardunio (which runs the Pulse Oximeter) of the athelas syste
 PulseOxThermo -> RD117_ARDUINO -> RD117_ARDUINO.ino
 
 ### ROS and Arduino Library Requirements
-- When installing rosserial library in Arduino IDE ver. 0.7.9 must be used.
+- When installing **rosserial** library in Arduino IDE ver. **0.7.9** must be used.
 	- Higher ver. use cstring which arduino doesn't use, so the code doesn't compile.
 
 #### Pinouts & Wire Runs
